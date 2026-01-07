@@ -1,18 +1,27 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+import { registerFeatures, unregisterFeatures } from './startup'
 
 function createWindow(): void {
+
+  const iconPath = is.dev 
+    ? join(__dirname, '../../build/icon.png') 
+    : join(process.resourcesPath, 'build/icon.png');
+    
   const mainWindow = new BrowserWindow({
     width: 900,
     height: 670,
     show: false,
+    title: 'Dragit',
+    icon: iconPath,
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
-      sandbox: false
+      sandbox: false,
+      contextIsolation: true,
     }
   })
 
@@ -33,14 +42,14 @@ function createWindow(): void {
 }
 
 app.whenReady().then(() => {
-  electronApp.setAppUserModelId('com.electron')
+  electronApp.setAppUserModelId('com.dragit')
 
   app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window)
   })
 
-  // IPC test
-  ipcMain.on('ping', () => console.log('pong'))
+  // Register all feature handlers via startup
+  registerFeatures()
 
   createWindow()
 
@@ -49,7 +58,10 @@ app.whenReady().then(() => {
   })
 })
 
-// explicitly with Cmd + Q.
+app.on('before-quit', () => {
+  unregisterFeatures()
+})
+
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()

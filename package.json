@@ -1,10 +1,26 @@
 {
   "name": "dragit",
+  "productName": "Dragit",
   "version": "0.0.1",
   "description": "Visualization for Git",
+  "license": "Apache-2.0",
   "main": "./out/main/index.js",
   "author": "Kheif Labs",
   "homepage": "",
+  "build": {
+    "appId": "com.kheiflabs.dragit",
+    "productName": "Dragit",
+    "directories": {
+      "buildResources": "build"
+    },
+    "win": {
+      "icon": "build/icon.ico",
+      "target": "nsis"
+    },
+    "mac": {
+      "icon": "build/icon.icns"
+    }
+  },
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint --cache .",
@@ -22,7 +38,8 @@
   },
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.2",
-    "@electron-toolkit/utils": "^4.0.0"
+    "@electron-toolkit/utils": "^4.0.0",
+    "simple-git": "^3.30.0"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config-prettier": "^3.0.0",
