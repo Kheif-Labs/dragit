@@ -1,8 +1,6 @@
 name: Validate & Build
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
     branches: [ main ]
 
@@ -11,8 +9,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  quality-check:
-    name: 🛡️ Quality Check (Lint & Types)
+  static-analysis:
+    name: Static Analysis (Lint & Types)
     runs-on: ubuntu-latest
     timeout-minutes: 10
     
@@ -28,15 +26,15 @@ jobs:
       - name: Install Dependencies
         run: npm ci
         
-      - name: Typecheck
+      - name: Check Types (TypeScript)
         run: npm run typecheck
         
-      - name: Lint
+      - name: Check Code Style (Lint)
         run: npm run lint
 
   build-check:
-    name: 🏗️ Build Check (${{ matrix.os }})
-    needs: quality-check
+    name: Build Check (${{ matrix.os }})
+    needs: static-analysis
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30
     
