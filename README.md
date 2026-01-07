@@ -3,7 +3,7 @@
 > **Stop typing commands. Start dragging history.**
 
 <p align="center">
-  <img src="resources/banner.png" alt="Dragit Logo" width="128" height="128">
+  <img src="resources/banner.png" alt="Dragit Logo" width="320"">
 </p>
 
 <p align="center">
