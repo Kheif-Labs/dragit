@@ -1,0 +1,5 @@
+dragit
+Copyright 2026 Kheif Labs
+
+This product includes software developed at
+Kheif Labs (https://github.com/Kheif-Labs).
