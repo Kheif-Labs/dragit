@@ -11,8 +11,10 @@ function createWindow(): void {
     : join(process.resourcesPath, 'build/icon.png');
     
   const mainWindow = new BrowserWindow({
-    width: 900,
-    height: 670,
+    width: 1200,
+    height: 700,
+    minWidth: 400,
+    minHeight: 700,
     show: false,
     title: 'Dragit',
     icon: iconPath,
