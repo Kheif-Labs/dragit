@@ -8,7 +8,7 @@ import { electronAPI } from '@electron-toolkit/preload'
 import { FileSystemChannels } from '../shared/features/filesystem/fs.contract'
 import { GitChannels } from '../shared/features/git/git.contract'
 import type { IElectronApi } from '../shared/api'
-import type { OpenFolderResult } from '../shared/features/filesystem/fs.contract'
+import type { OpenFolderResult, GetRecentProjectsResult, CreateNewFileResult } from '../shared/features/filesystem/fs.contract'
 import type { GetCommitsRequest, GetCommitsResult } from '../shared/features/git/git.contract'
 
 // Type-safe API implementation
@@ -16,6 +16,12 @@ const api: IElectronApi = {
   // FileSystem API
   openFolderDialog: (): Promise<OpenFolderResult> => {
     return ipcRenderer.invoke(FileSystemChannels.OPEN_FOLDER_DIALOG)
+  },
+  getRecentProjects: (): Promise<GetRecentProjectsResult> => {
+    return ipcRenderer.invoke(FileSystemChannels.GET_RECENT_PROJECTS)
+  },
+  createNewFile: (): Promise<CreateNewFileResult> => {
+    return ipcRenderer.invoke(FileSystemChannels.CREATE_NEW_FILE)
   },
 
   // Git API
