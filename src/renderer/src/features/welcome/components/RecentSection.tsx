@@ -4,7 +4,7 @@
  */
 
 import { useRecentProjects } from '../useRecentProjects'
-import { ClockIcon } from './icons'
+import { ClockIcon } from './Icons'
 import './RecentSection.css'
 
 interface RecentSectionProps {

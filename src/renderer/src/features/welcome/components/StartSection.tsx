@@ -5,7 +5,7 @@
 
 import { useState } from 'react'
 import { ActionButton } from './ActionButton'
-import { FolderIcon, GitBranchIcon } from './icons'
+import { FolderIcon, GitBranchIcon } from './Icons'
 import './StartSection.css'
 
 interface StartSectionProps {
