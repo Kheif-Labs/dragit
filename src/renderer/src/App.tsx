@@ -18,6 +18,11 @@ function App(): React.JSX.Element {
     setCurrentView('git-history')
   }
 
+  const handleCloneRepository = (): void => {
+    //TODO: Implement clone repository modal/view
+    console.log('Clone repository clicked')
+  }
+
   const handleBack = (): void => {
     setCurrentView('welcome')
     setSelectedRepoPath(null)
@@ -26,7 +31,7 @@ function App(): React.JSX.Element {
   return (
     <>
       {currentView === 'welcome' && (
-        <WelcomeScreen onFolderSelected={handleFolderSelected} />
+        <WelcomeScreen onFolderSelected={handleFolderSelected} onCloneRepository={handleCloneRepository} />
       )}
       {currentView === 'git-history' && selectedRepoPath && (
         <GitLogList repoPath={selectedRepoPath} onBack={handleBack} />

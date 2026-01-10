@@ -1,52 +1,36 @@
 /**
  * WelcomeScreen Component
- * Entry screen with folder selection functionality
+ * Professional desktop-wide welcome page for Dragit
  */
 
-import { useFolderOpen } from './useFolderOpen'
+import { StartSection } from './components/StartSection'
+import { RecentSection } from './components/RecentSection'
+import { WelcomeHeader } from './components/WelcomeHeader'
 import './WelcomeScreen.css'
 
 interface WelcomeScreenProps {
   onFolderSelected: (path: string) => void
+  onCloneRepository: () => void
 }
 
-export function WelcomeScreen({ onFolderSelected }: WelcomeScreenProps): React.JSX.Element {
-  const { selectedPath, isLoading, error, openFolder } = useFolderOpen()
-
-  const handleOpenFolder = async (): Promise<void> => {
-    await openFolder()
-  }
-
-  // Notify parent when folder is selected
-  if (selectedPath) {
-    onFolderSelected(selectedPath)
-  }
-
+export function WelcomeScreen({
+  onFolderSelected,
+  onCloneRepository
+}: WelcomeScreenProps): React.JSX.Element {
   return (
     <div className="welcome-screen">
       <div className="welcome-content">
-        <h1 className="welcome-title">Welcome to Dragit</h1>
-        <p className="welcome-subtitle">
-          Select a Git repository to get started
-        </p>
+        <div className="welcome-column welcome-column--left">
+          <WelcomeHeader />
+          <StartSection
+            onFolderSelected={onFolderSelected}
+            onCloneRepository={onCloneRepository}
+          />
+        </div>
 
-        <button
-          className="open-folder-button"
-          onClick={handleOpenFolder}
-          disabled={isLoading}
-        >
-          {isLoading ? 'Opening...' : 'Open Folder'}
-        </button>
-
-        {error && (
-          <p className="error-message">{error}</p>
-        )}
-
-        {selectedPath && (
-          <p className="selected-path">
-            Selected: <code>{selectedPath}</code>
-          </p>
-        )}
+        <div className="welcome-column welcome-column--right">
+          <RecentSection onProjectSelected={onFolderSelected} />
+        </div>
       </div>
     </div>
   )
