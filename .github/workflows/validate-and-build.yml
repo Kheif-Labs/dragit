@@ -34,9 +34,30 @@ jobs:
       - name: Check Code Style (Lint)
         run: npm run lint
 
+  test:
+    name: Unit & Integration Tests
+    needs: static-analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          
+      - name: Install Dependencies
+        run: npm ci
+        
+      - name: Run Tests
+        run: npm test -- --run
+
   build-check:
     name: Build Check (${{ matrix.os }})
-    needs: static-analysis
+    needs: test
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30
     
