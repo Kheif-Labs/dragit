@@ -3,9 +3,10 @@
  * Primary actions for getting started with Dragit
  */
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ActionButton } from './ActionButton'
 import { FolderIcon, GitBranchIcon } from './Icons'
+import { useFolderOpen } from '../useFolderOpen'
 import './StartSection.css'
 
 interface StartSectionProps {
@@ -17,24 +18,20 @@ export function StartSection({
   onFolderSelected,
   onCloneRepository
 }: StartSectionProps): React.JSX.Element {
-  const [isLoading, setIsLoading] = useState<string | null>(null)
+  const [isCloning, setIsCloning] = useState(false)
+  const { selectedPath, isLoading: isFolderLoading, openFolder } = useFolderOpen()
 
-  const handleOpenFolder = async (): Promise<void> => {
-    setIsLoading('folder')
-    try {
-      const result = await window.api.openFolderDialog()
-      if (result.success && result.path) {
-        onFolderSelected(result.path)
-      }
-    } finally {
-      setIsLoading(null)
+  // Notify parent when folder is selected
+  useEffect(() => {
+    if (selectedPath) {
+      onFolderSelected(selectedPath)
     }
-  }
+  }, [selectedPath, onFolderSelected])
 
   const handleCloneRepository = (): void => {
-    setIsLoading('clone')
+    setIsCloning(true)
     onCloneRepository()
-    setIsLoading(null)
+    setIsCloning(false)
   }
 
   return (
@@ -48,8 +45,8 @@ export function StartSection({
           title="Open Folder"
           description="Browse to a local Git repository"
           shortcut="Ctrl+O"
-          onClick={handleOpenFolder}
-          isLoading={isLoading === 'folder'}
+          onClick={openFolder}
+          isLoading={isFolderLoading}
         />
 
         <ActionButton
@@ -58,7 +55,7 @@ export function StartSection({
           description="Clone a repository from a remote URL"
           shortcut="Ctrl+Shift+G"
           onClick={handleCloneRepository}
-          isLoading={isLoading === 'clone'}
+          isLoading={isCloning}
         />
       </div>
     </section>
